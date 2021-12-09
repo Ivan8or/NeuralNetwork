@@ -12,8 +12,7 @@ targetCompatibility = '1.8'
 
 repositories {
     mavenCentral()
-    maven {
-    }
+
 maven {name = 'sonatype'
 url = 'https://oss.sonatype.org/content/groups/public/'
 } }

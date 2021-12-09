@@ -3,13 +3,11 @@ package SimplePerceptron;
 import online.umbcraft.component.Connection;
 import online.umbcraft.component.ThresholdLogicUnit;
 import online.umbcraft.component.activationfunction.ActivationFunction;
-import online.umbcraft.component.activationfunction.HeavisideFunction;
 import online.umbcraft.component.activationfunction.SigmoidFunction;
-import online.umbcraft.component.activationfunction.TanhFunction;
 import online.umbcraft.component.input.BiasInput;
 import online.umbcraft.component.input.Input;
 import online.umbcraft.component.input.PassthroughInput;
-import online.umbcraft.data.DataGrapher;
+import online.umbcraft.data.jframe.DataGrapher;
 import online.umbcraft.data.DataPoint;
 import online.umbcraft.data.DataSet;
 
@@ -17,7 +15,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class SinglePerceptron {
+public class OneTLU {
 
     final static public Random RANDOM = new Random(420);
 
@@ -48,7 +46,7 @@ public class SinglePerceptron {
 
         DataGrapher graph = new DataGrapher();
 
-        for (int i = 0; i < 150000; i++) {
+        for (int i = 0; i < 1500000; i++) {
             double x = (RANDOM.nextDouble()-0.5) * 2;
             double y = (RANDOM.nextDouble()-0.5) * 2;
             double fx = goalFunction(x);
@@ -61,7 +59,7 @@ public class SinglePerceptron {
         }
 
 
-        DataSet[] split = dataset.splitSet(0.9875);
+        DataSet[] split = dataset.splitSet(0.5);
         System.out.println("Size of training set: "+ Arrays.toString(split[0].dimensions()));
         System.out.println("Size of testing set: "+ Arrays.toString(split[1].dimensions()));
 
@@ -82,14 +80,15 @@ public class SinglePerceptron {
                 double result = tlu.trainEvaluate(point.getLabel(), STEP_SIZE);
 
 
-                graph.addPoint(xcoord,ycoord,((point.getLabel() == 1)? Color.RED : Color.BLUE));
+                graph.addPoint_g(xcoord,ycoord,((point.getLabel() == 1)? Color.RED : Color.BLUE));
 
                 if (point.getLabel() == Math.round(result))
                     trainingSuccess++;
-                else
-                    graph.addPoint(xcoord,ycoord+0.01,Color.DARK_GRAY);
+                else {
+                    graph.addPoint_g(xcoord, ycoord + 0.01, Color.DARK_GRAY);
+                    graph.addPoint_m(xcoord, ycoord + 0.01, Color.DARK_GRAY);
+                }
             }
-
 
             int testSuccess = 0;
             int trainingSize = split[1].getData().size();
@@ -111,16 +110,17 @@ public class SinglePerceptron {
 
             double slope = (xConn.getWeight()/yConn.getWeight());
             double intercept = biasConn.getWeight() / yConn.getWeight();
-            graph.addLine(slope, intercept, Color.MAGENTA);
-
+            graph.addLine_g(slope, intercept, Color.MAGENTA);
+            graph.addLine_m(slope, intercept, Color.MAGENTA);
 
             String garbage = sc.nextLine();
-            if(i < trainingBatches.length-1)
-                graph.clear();
+            if(i < trainingBatches.length-1) {
+                graph.clear_g();
+                graph.clear_m();
+            }
         }
     }
-
     private static double goalFunction(double x) {
-        return 2*x - 0.5;
+        return 0.33*x - 0.44;
     }
 }

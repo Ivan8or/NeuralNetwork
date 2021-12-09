@@ -1,7 +1,6 @@
 package online.umbcraft.component;
 
 import online.umbcraft.component.activationfunction.ActivationFunction;
-import online.umbcraft.component.input.BiasInput;
 import online.umbcraft.component.input.Input;
 
 import java.util.List;
@@ -33,15 +32,6 @@ public class ThresholdLogicUnit implements Input {
             double newWeight = originalWeight + STEP_SIZE * rawValue *
                     (label - solution);
             c.setWeight(newWeight);
-
-            if(c.getInput() instanceof ThresholdLogicUnit) {
-                ThresholdLogicUnit feed = (ThresholdLogicUnit) c.getInput();
-                double feedSolution = feed.evaluate();
-                feed.trainEvaluate(
-                        solution
-                        , STEP_SIZE);
-            }
-
         }
 
         return solution;
