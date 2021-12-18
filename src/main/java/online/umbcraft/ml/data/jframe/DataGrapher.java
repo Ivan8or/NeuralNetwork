@@ -1,6 +1,4 @@
-package online.umbcraft.data.jframe;
-
-import online.umbcraft.data.jframe.PicPanel;
+package online.umbcraft.ml.data.jframe;
 
 import javax.swing.*;
 import java.awt.*;

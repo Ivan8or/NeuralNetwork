@@ -1,7 +1,7 @@
-package online.umbcraft.component;
+package online.umbcraft.ml.component;
 
 import online.umbcraft.NeuralNetwork;
-import online.umbcraft.component.input.Input;
+import online.umbcraft.ml.component.input.Input;
 
 public class Connection {
 

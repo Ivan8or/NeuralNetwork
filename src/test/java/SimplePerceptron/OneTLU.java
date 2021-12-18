@@ -1,15 +1,15 @@
 package SimplePerceptron;
 
-import online.umbcraft.component.Connection;
-import online.umbcraft.component.ThresholdLogicUnit;
-import online.umbcraft.component.activationfunction.ActivationFunction;
-import online.umbcraft.component.activationfunction.SigmoidFunction;
-import online.umbcraft.component.input.BiasInput;
-import online.umbcraft.component.input.Input;
-import online.umbcraft.component.input.PassthroughInput;
-import online.umbcraft.data.jframe.DataGrapher;
-import online.umbcraft.data.DataPoint;
-import online.umbcraft.data.DataSet;
+import online.umbcraft.ml.component.Connection;
+import online.umbcraft.ml.component.ThresholdLogicUnit;
+import online.umbcraft.ml.component.activationfunction.ActivationFunction;
+import online.umbcraft.ml.component.activationfunction.SigmoidFunction;
+import online.umbcraft.ml.component.input.BiasInput;
+import online.umbcraft.ml.component.input.Input;
+import online.umbcraft.ml.component.input.PassthroughInput;
+import online.umbcraft.ml.data.jframe.DataGrapher;
+import online.umbcraft.ml.data.DataPoint;
+import online.umbcraft.ml.data.DataSet;
 
 import java.awt.*;
 import java.util.*;

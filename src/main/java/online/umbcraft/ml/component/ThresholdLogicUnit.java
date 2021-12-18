@@ -1,11 +1,10 @@
-package online.umbcraft.component;
+package online.umbcraft.ml.component;
 
-import online.umbcraft.component.activationfunction.ActivationFunction;
-import online.umbcraft.component.input.Input;
+import online.umbcraft.ml.component.activationfunction.ActivationFunction;
 
 import java.util.List;
 
-public class ThresholdLogicUnit implements Input {
+public class ThresholdLogicUnit {
 
     final private List<Connection> inputs;
     final private ActivationFunction activationFunction;
@@ -38,11 +37,6 @@ public class ThresholdLogicUnit implements Input {
     }
 
     public double evaluate() {
-        return activationFunction.process(getWeightedSum());
-    }
-
-    @Override
-    public double getInput() {
-        return evaluate();
+        return activationFunction.result(getWeightedSum());
     }
 }

@@ -1,4 +1,4 @@
-package online.umbcraft.component.input;
+package online.umbcraft.ml.component.input;
 
 public interface Input {
 

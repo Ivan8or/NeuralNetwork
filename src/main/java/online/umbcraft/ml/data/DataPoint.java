@@ -1,4 +1,4 @@
-package online.umbcraft.data;
+package online.umbcraft.ml.data;
 
 import java.util.List;
 
