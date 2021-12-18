@@ -15,6 +15,11 @@ public class ThresholdLogicUnit {
         this.activationFunction = activationFunction;
     }
 
+
+    public List<Connection> getInputs() {
+        return inputs;
+    }
+
     public double getWeightedSum() {
         double toReturn = 0;
         for (Connection c : inputs) {

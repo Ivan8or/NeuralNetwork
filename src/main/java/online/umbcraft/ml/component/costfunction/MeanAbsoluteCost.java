@@ -7,6 +7,7 @@ public class MeanAbsoluteCost implements CostFunction {
         return Math.abs(prediction - goal);
     }
 
+    @Override
     public double derivative(double prediction, double goal) {
         throw new IllegalCallerException("Function does not have a derivative");
     }
