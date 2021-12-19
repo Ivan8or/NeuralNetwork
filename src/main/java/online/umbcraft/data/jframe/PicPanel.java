@@ -1,4 +1,4 @@
-package online.umbcraft.ml.data.jframe;
+package online.umbcraft.data.jframe;
 
 import javax.swing.*;
 import java.awt.*;

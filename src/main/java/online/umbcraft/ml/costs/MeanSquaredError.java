@@ -1,6 +1,6 @@
-package online.umbcraft.ml.component.costfunction;
+package online.umbcraft.ml.costs;
 
-public class MeanSquaredCost implements CostFunction {
+public class MeanSquaredError implements ErrorFunction {
 
     @Override
     public double result(double prediction, double goal) {

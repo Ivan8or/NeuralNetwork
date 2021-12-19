@@ -1,6 +1,7 @@
 package online.umbcraft.ml.component;
 
-import online.umbcraft.ml.component.activationfunction.ActivationFunction;
+import online.umbcraft.ml.activations.ActivationFunction;
+import online.umbcraft.ml.component.Connection;
 
 import java.util.List;
 
@@ -37,7 +38,6 @@ public class ThresholdLogicUnit {
                     (label - solution);
             c.setWeight(newWeight);
         }
-
         return solution;
     }
 

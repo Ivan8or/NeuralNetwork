@@ -1,4 +1,4 @@
-package online.umbcraft.ml.component.activationfunction;
+package online.umbcraft.ml.activations;
 
 public class SignFunction implements ActivationFunction {
 

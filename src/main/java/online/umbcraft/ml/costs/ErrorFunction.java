@@ -1,6 +1,6 @@
-package online.umbcraft.ml.component.costfunction;
+package online.umbcraft.ml.costs;
 
-public interface CostFunction {
+public interface ErrorFunction {
 
     double result(double prediction, double goal);
 

@@ -1,25 +1,25 @@
 package online.umbcraft.ml.component;
 
 import online.umbcraft.NeuralNetwork;
-import online.umbcraft.ml.component.input.Input;
+import online.umbcraft.ml.component.nodes.Node;
 
 public class Connection {
 
-    final private Input input;
+    final private Node node;
     private double weight;
 
-    public Connection(Input input) {
-        this.input = input;
+    public Connection(Node node) {
+        this.node = node;
         weight = (NeuralNetwork.RANDOM.nextDouble() - 0.5);
     }
 
-    public Connection(Input input, double weight) {
-        this.input = input;
+    public Connection(Node node, double weight) {
+        this.node = node;
         this.weight = weight;
     }
 
-    public Input getInput() {
-        return input;
+    public Node getInput() {
+        return node;
     }
 
     public double getWeight() {
@@ -35,10 +35,10 @@ public class Connection {
     }
 
     public double getConnectionValue() {
-        return weight * input.getInput();
+        return weight * node.getValue();
     }
 
     public double getRawValue() {
-        return input.getInput();
+        return node.getValue();
     }
 }

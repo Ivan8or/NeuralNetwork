@@ -1,4 +1,4 @@
-package online.umbcraft.ml.data.jframe;
+package online.umbcraft.data.jframe;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,11 +34,11 @@ public class DataGrapher extends JFrame {
         setJMenuBar(menubar);
 
 
-        gradientPicpanel = new PicPanel(1,1);
+        gradientPicpanel = new PicPanel(10,10);
         gradientPicpanel.setBounds(10,10,500,500);
         this.add(gradientPicpanel);
 
-        missesPicpanel = new PicPanel(1,1);
+        missesPicpanel = new PicPanel(10,10);
         missesPicpanel.setBounds(10,10,500,500);
         this.add(missesPicpanel);
         missesPicpanel.setVisible(false);

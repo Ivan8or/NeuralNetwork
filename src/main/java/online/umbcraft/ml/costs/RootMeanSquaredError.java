@@ -1,9 +1,6 @@
-package online.umbcraft.ml.component.costfunction;
+package online.umbcraft.ml.costs;
 
-import online.umbcraft.ml.data.DataPoint;
-import online.umbcraft.ml.data.DataSet;
-
-public class RootMeanSquaredCost implements CostFunction {
+public class RootMeanSquaredError implements ErrorFunction {
 
     @Override
     public double result(double prediction, double goal) {

@@ -1,35 +1,35 @@
-package online.umbcraft.ml.data;
+package online.umbcraft.data.inputs;
 
 import java.util.List;
 
 public class DataPoint {
-    final List<Double> features;
-    final Double label;
+    final double[] features;
+    final double[] labels;
 
     // populate datapoint with features and label
-    public DataPoint(List<Double> features, double label) {
+    public DataPoint(double[] features, double[] labels) {
         this.features = features;
-        this.label = label;
+        this.labels = labels;
     }
 
     // populate datapoint with features; exclude label
-    public DataPoint(List<Double> features) {
+    public DataPoint(double[] features) {
         this.features = features;
-        this.label = null;
+        this.labels = null;
     }
 
     // return number of features in datapoint
     public int dimension() {
-        return features.size();
+        return features.length;
     }
 
     // return each feature in the datapoint
-    public List<Double> getFeatures() {
+    public double[] getFeatures() {
         return features;
     }
 
     // return the datapoint label
-    public Double getLabel() {
-        return label;
+    public double[] getLabels() {
+        return labels;
     }
 }

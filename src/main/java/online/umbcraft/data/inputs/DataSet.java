@@ -1,4 +1,4 @@
-package online.umbcraft.ml.data;
+package online.umbcraft.data.inputs;
 
 import online.umbcraft.NeuralNetwork;
 
