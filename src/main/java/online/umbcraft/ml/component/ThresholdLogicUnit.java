@@ -29,18 +29,6 @@ public class ThresholdLogicUnit {
         return toReturn;
     }
 
-    public double trainEvaluate(final double label, final double STEP_SIZE) {
-        double solution = evaluate();
-        for (Connection c : inputs) {
-            double rawValue = c.getRawValue();
-            double originalWeight = c.getWeight();
-            double newWeight = originalWeight + STEP_SIZE * rawValue *
-                    (label - solution);
-            c.setWeight(newWeight);
-        }
-        return solution;
-    }
-
     public double evaluate() {
         return activationFunction.result(getWeightedSum());
     }

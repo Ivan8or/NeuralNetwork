@@ -28,6 +28,7 @@ public class Layer {
         nodes = new ArrayList<>(size);
         bias = new BiasNode();
     }
+
     public void add(Node node) {
         nodes.add(node);
     }
@@ -41,8 +42,10 @@ public class Layer {
         return nodes.size();
     }
 
-    public List<OffsetVector> train(double[] labels) {
+    public List<OffsetVector> train(final double[] labels) {
+
         List<OffsetVector> allOffsets = new ArrayList<>();
+
         ActivationFunction af = perceptron.getActivationFunction();
         ErrorFunction ef = perceptron.getErrorFunction();
 
@@ -55,16 +58,21 @@ public class Layer {
             double guess = tlu.evaluate();
 
             OffsetVector offsets = new OffsetVector();
-            double[] weightOffsets = new double[nodeInputs.size()];
-            double[] nodeOffsets = new double[nodeInputs.size()];
+            double[] weightOffsets = new double[nodeInputs.size()-1];
+            double[] nodeOffsets = new double[nodeInputs.size()-1];
 
             // get node bias offset
             double biasOffset = ef.derivative(guess, labels[nodeIndex])
                     * af.derivative(weightedSum)
                     * -1; // need to get NEGATIVE slope
 
-            // get weight and node offsets for each connection
-            for(int connIndex = 0; connIndex < nodeInputs.size(); connIndex++) {
+//            System.out.println("guess: "+guess+", answer: "+labels[nodeIndex]);
+//            System.out.println("weighted sum: "+weightedSum);
+//            System.out.println("ef deriv: "+ef.derivative(guess, labels[nodeIndex]));
+//            System.out.println("af deriv: "+af.derivative(weightedSum));
+
+            // get weight and node offsets for each non-bias connection
+            for(int connIndex = 0; connIndex < nodeInputs.size()-1; connIndex++) {
                 Connection conn = nodeInputs.get(connIndex);
 
                 weightOffsets[connIndex] = biasOffset
@@ -76,7 +84,6 @@ public class Layer {
             offsets.setBiasOffset(biasOffset);
             offsets.setWeightOffsets(weightOffsets);
             offsets.setNodeOffsets(nodeOffsets);
-
             allOffsets.add(offsets);
         }
 

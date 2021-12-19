@@ -20,7 +20,17 @@ public class PicPanel extends JPanel {
         clear();
     }
 
-    private int[] scaleCoord(double rawX, double rawY) {
+    public double[] descaleCoord(double pixX, double pixY) {
+        double xRatio = pixX / width;
+        double coordX = (xRatio - 0.5) * xRadius*2;//(int)((width/2) * xRatio);
+
+        double yRatio = pixY / height;
+        double coordY = (0.5 - yRatio) * yRadius*2; // (height/2) + scaledy;
+
+        return new double[]{coordX,coordY};
+    }
+
+    public int[] scaleCoord(double rawX, double rawY) {
         double xRatio = rawX / xRadius;
         int scaledx = (int)((width/2) * xRatio);
         int x = (width/2) + scaledx;

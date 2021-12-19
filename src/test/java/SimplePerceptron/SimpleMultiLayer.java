@@ -1,5 +1,6 @@
 package SimplePerceptron;
 
+import online.umbcraft.data.offsets.OffsetVector;
 import online.umbcraft.ml.component.Connection;
 import online.umbcraft.ml.component.ThresholdLogicUnit;
 import online.umbcraft.ml.activations.ActivationFunction;
@@ -36,7 +37,7 @@ public class SimpleMultiLayer {
 
         Scanner sc = new Scanner(System.in);
 
-        double STEP_SIZE = 0.05;
+        double STEP_SIZE = 0.3;
         double STEP_MULTIPLIER = 1;
 
         ActivationFunction activationFunction = new TanhFunction();
@@ -73,24 +74,29 @@ public class SimpleMultiLayer {
 
 
         DataSet dataset = new DataSet();
-        DataGrapher graph = new DataGrapher();
+        DataGrapher graph = new DataGrapher(dataset);
+
 
 
         // generate data
-        for (int i = 0; i < 9000; i++) {
-            double x = (RANDOM.nextDouble() - 0.5) * 20;
-            double y = (RANDOM.nextDouble() - 0.5) * 20;
-            boolean fx = goalFunction(x,y);
-            List<Double> features = new ArrayList<>();
-            features.add(x);
-            features.add(y);
-            double label = (fx) ? 1 : -1;
-            DataPoint newPoint = new DataPoint(
-                    new double[]{x, y},
-                    new double[]{label});
-            dataset.add(newPoint);
-            graph.addPoint_g(x,y,(label == 1)?Color.RED : Color.BLUE);
-        }
+//        for (int i = 0; i < 9000; i++) {
+//            double x = (RANDOM.nextDouble() - 0.5) * 20;
+//            double y = (RANDOM.nextDouble() - 0.5) * 20;
+//            boolean fx = goalFunction(x,y);
+//            List<Double> features = new ArrayList<>();
+//            features.add(x);
+//            features.add(y);
+//            double label = (fx) ? 1 : -1;
+//            DataPoint newPoint = new DataPoint(
+//                    new double[]{x, y},
+//                    new double[]{label});
+//            dataset.add(newPoint);
+//            //graph.addPoint_g(x,y,(label == 1)?Color.RED : Color.BLUE);
+//        }
+
+
+        sc.nextLine();
+
         DataSet[] split = dataset.splitSet(0.5);
         //DataSet[] trainingBatches = split[0].batches(15);
 
@@ -100,7 +106,6 @@ public class SimpleMultiLayer {
 
         MeanSquaredError mse = new MeanSquaredError();
 
-        Thread.sleep(6500);
         for (int epoch = 1; epoch <= 100000; epoch++) {
             double totalError = 0;
             double testSize = split[1].getData().size();

@@ -1,5 +1,6 @@
 package online.umbcraft.data.inputs;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class DataPoint {
@@ -31,5 +32,12 @@ public class DataPoint {
     // return the datapoint label
     public double[] getLabels() {
         return labels;
+    }
+
+    public String toString() {
+        String toReturn = "";
+        toReturn+= "features: "+ Arrays.toString(features)+"\t";
+        toReturn+= "labels: "+ Arrays.toString(labels);
+        return toReturn;
     }
 }
