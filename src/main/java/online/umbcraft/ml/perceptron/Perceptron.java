@@ -12,6 +12,7 @@ import online.umbcraft.ml.component.nodes.PassthroughNode;
 import online.umbcraft.ml.component.nodes.TLUNode;
 import online.umbcraft.ml.costs.ErrorFunction;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,9 +62,23 @@ public class Perceptron {
         }
     }
 
-    public List<Layer> getLayers() {
-        return layers;
+    public double performTest(DataSet testSet) {
+
+        double totalError = 0;
+        for(DataPoint testPoint : testSet.getData()) {
+            setFeatures(testPoint);
+            double[] guesses = evaluate(testPoint.getFeatures());
+
+            for(int labelIndex = 0; labelIndex < testPoint.getLabels().length; labelIndex++) {
+                double label = testPoint.getLabels()[labelIndex];
+                double guess = guesses[labelIndex];
+                totalError += ef.result(guess, label);
+            }
+        }
+        double avgError = totalError / (testSet.getData().size() * testSet.getData().get(0).getLabels().length);
+        return avgError;
     }
+
 
     // uses values from datapoint to fill features
     public void setFeatures(DataPoint inputs) {

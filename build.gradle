@@ -2,6 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 group = 'online.umbcraft'
@@ -25,4 +26,19 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
     }
+}
+
+sourceSets {
+   main {
+      java {
+         srcDir 'src'
+      }
+   }
+}
+
+jar {
+  manifest {
+     attributes "Main-Class": "online.umbcraft.NeuralNetwork"
+     attributes "Class-Path": configurations.compile.collect { it.absolutePath }.join(" ")
+  }
 }

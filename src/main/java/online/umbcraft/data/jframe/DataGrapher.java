@@ -43,15 +43,15 @@ public class DataGrapher extends JFrame {
         setJMenuBar(menubar);
 
 
-        gradientPicpanel = new PicPanel(1,1);
+        gradientPicpanel = new PicPanel(10,10);
         gradientPicpanel.setBounds(10,10,500,500);
-        gradientPicpanel.addMouseListener(new ClickListener(this));
+        //gradientPicpanel.addMouseListener(new ClickListener(this));
         this.add(gradientPicpanel);
 
-        missesPicpanel = new PicPanel(1,1);
+        missesPicpanel = new PicPanel(10,10);
         missesPicpanel.setBounds(10,10,500,500);
         this.add(missesPicpanel);
-        missesPicpanel.addMouseListener(new ClickListener(this));
+        //missesPicpanel.addMouseListener(new ClickListener(this));
         missesPicpanel.setVisible(false);
         setVisible(true);
 
@@ -112,11 +112,11 @@ public class DataGrapher extends JFrame {
 
                 System.out.println("graphing point at x=" + coords[0] + " y=" + coords[1]);
 
-                boolean blue = e.getButton() == MouseEvent.BUTTON1;
+                boolean red = e.getButton() == MouseEvent.BUTTON1;
 
-                addPoint_g(coords[0], coords[1], (blue) ? Color.BLUE : Color.RED);
+                addPoint_g(coords[0], coords[1], (red) ? Color.RED : Color.BLUE);
 
-                dataset.add(new DataPoint(coords, new double[]{((blue) ? -1.0 : 1.0)}));
+                dataset.add(new DataPoint(coords, new double[]{((red) ? -1.0 : 1.0)}));
             }
         }
 

@@ -3,110 +3,133 @@ package SimplePerceptron;
 import online.umbcraft.data.inputs.DataPoint;
 import online.umbcraft.data.inputs.DataSet;
 import online.umbcraft.data.jframe.DataGrapher;
-import online.umbcraft.data.offsets.OffsetVector;
 import online.umbcraft.ml.activations.TanhFunction;
-import online.umbcraft.ml.component.Connection;
-import online.umbcraft.ml.component.Layer;
-import online.umbcraft.ml.component.nodes.TLUNode;
 import online.umbcraft.ml.costs.MeanSquaredError;
 import online.umbcraft.ml.perceptron.Perceptron;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 public class MultiLayerPercept {
 
-
     final static public Random RANDOM = new Random(420);
 
+    public static int goalFunction(double x, double y) {
 
-    public static void main(String[] args) throws InterruptedException {
+        double toCenter = Math.sqrt(2*x*x + y*y);
+        if(toCenter < 3)
+            return 0;
+        if(toCenter < 6.5)
+            return 1;
+        if(toCenter < 11.5)
+            return 2;
+        return 3;
+    }
+
+    public static int largestIndex(double[] arr) {
+        int maxIndex = 0;
+        double maxVal = -1;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] > maxVal) {
+                maxIndex = i;
+                maxVal = arr[i];
+            }
+        }
+        return maxIndex;
+    }
+
+    public static void main(String[] args) {
         Perceptron perceptron = new Perceptron(
                 new TanhFunction(),
                 new MeanSquaredError(),
-                2, 8, 8, 8, 8, 1
+                5, 12, 12, 4
         );
+
+        double STEP_SIZE = 0.16;
 
         DataSet dataset = new DataSet();
         DataGrapher graph = new DataGrapher(dataset);
 
         // dataset of size 10k
-        for (int i = 0; i < 10000; i++) {
-            double x = (RANDOM.nextDouble() - 0.5) * 2;
-            double y = (RANDOM.nextDouble() - 0.5) * 2;
 
-            List<Double> features = new ArrayList<>();
-            features.add(x);
-            features.add(y);
+        Scanner sc = new Scanner(System.in);
+        //System.out.println("manual point entry...");
 
-            // function to imitate
-            boolean fx = (x*x +y*y < 0.5*0.5);
+        Color[] colors = {Color.BLUE, Color.RED, Color.BLACK, Color.CYAN};
+        double interval = 0.3;
+        //double interval = 0.1575;
+        for (double x = -10.0; x < 10; x+=interval) {
+            for (double y = -10.0; y < 10; y+=interval) {
 
+                // function to imitate
+                //boolean fx = (x*x +y*y < 1.5*1.5);
+                double[] labels = {-1, -1, -1, -1};
 
-            double label = (fx) ? 1 : -1;
-            DataPoint newPoint = new DataPoint(
-                    new double[]{x, y},
-                    new double[]{label});
-            dataset.add(newPoint);
-            graph.addPoint_g(x,y,(fx) ? Color.BLUE: Color.RED);
+                int goalIndex = goalFunction(x, y);
+                labels[goalIndex] = 1;
+
+                DataPoint newPoint = new DataPoint(
+                        new double[]{x, y, x*x, y*y, Math.sqrt(x*x + y*y)},
+                        labels);
+                dataset.add(newPoint);
+                graph.addPoint_g(x, y, colors[goalIndex]);
+            }
         }
-        DataSet[] split = dataset.splitSet(0.25);
-        DataSet trainingData = split[0];
-        DataSet testingData = split[1];
-        DataSet[] batches = trainingData.batches(15);
+        System.out.println("dataset size: "+dataset.dimensions()[1]);
 
-
-
+        sc.nextLine();
+        dataset.shuffle();
+        DataSet[] batches = dataset.batches(1);
 
 
         // 10k epochs!
         int epoch = 0;
-        for(int i = 0; i < 10000; i++) {
-            double totalError = 0;
-            double testSize = testingData.getData().size();
+        for (int i = 0; i < 500000; i++) {
+            System.out.println("----Epoch " + epoch+":");
+            int iteration = 0;
+            for (DataSet batch : batches) {
+                System.out.println("----Iteration " + iteration+":");
+                iteration++;
+                double totalError = 0;
+                int numRight = 0;
+                double testSize = dataset.getData().size();
 
-            for(DataPoint testPoint : testingData.getData()) {
-                perceptron.setFeatures(testPoint);
-                double guess = perceptron.evaluate(testPoint.getFeatures()[0], testPoint.getFeatures()[1])[0];
-                graph.addPoint_m(
-                        testPoint.getFeatures()[0],
-                        testPoint.getFeatures()[1],
-                        (guess < 0)?Color.RED: Color.BLUE
-                );
-                double cost = perceptron.getErrorFunction().result(guess, testPoint.getLabels()[0]);
-                totalError += cost;
+                double startTestTime = System.currentTimeMillis();
+
+                for (DataPoint testPoint : dataset.getData()) {
+                    perceptron.setFeatures(testPoint);
+                    double[] guesses = perceptron.evaluate(testPoint.getFeatures());
+                    int largestIndex = largestIndex(guesses);
+                    graph.addPoint_m(
+                            testPoint.getFeatures()[0],
+                            testPoint.getFeatures()[1],
+                            colors[largestIndex]
+                    );
+                    if(largestIndex == goalFunction(testPoint.getFeatures()[0],testPoint.getFeatures()[1]))
+                        numRight++;
+
+                    // calculate error for all labels for the output
+                    for (int labelIndex = 0; labelIndex < testPoint.getLabels().length; labelIndex++) {
+                        double label = testPoint.getLabels()[labelIndex];
+                        double guess = guesses[labelIndex];
+                        totalError += perceptron.getErrorFunction().result(guess, label);
+                    }
+                }
+                double endTestTime = System.currentTimeMillis();
+                double avgError = totalError / (testSize * dataset.getData().get(0).getLabels().length);
+
+                // train
+                double startTime = System.currentTimeMillis();
+                perceptron.trainIteration(batch, STEP_SIZE);
+                double endTime = System.currentTimeMillis();
+                System.out.println("testing iteration took "+(endTestTime-startTestTime)+"ms");
+                System.out.println("training iteration took "+(endTime-startTime)+"ms");
+                System.out.println("EF error is " + avgError);
+                System.out.println("Percentage is " + (numRight/testSize));
+
             }
-            double avgError = totalError / testSize;
-            System.out.println("----Epoch "+epoch+": error is "+avgError);
-
-
-            // train
-
-            for(DataSet batch : batches)
-                perceptron.trainIteration(batch, 0.1);
-
-//            Layer output = perceptron.getLayers().get(1);
-//            TLUNode node = (TLUNode) output.getNodes().get(0);
-//            List<Connection> conns = node.getTLU().getInputs();
-//
-//            OffsetVector total = null;
-//            for(DataPoint dp: trainingData.getData()) {
-//                //System.out.println("datapoint: \n"+dp);
-//                perceptron.setFeatures(dp);
-//                OffsetVector ov = output.train(dp.getLabels()).get(0);
-//                if(total == null)
-//                    total = ov;
-//                else {
-//                    total = total.add(ov);
-//                }
-//            }
-//            //System.out.println("offsetting by \n"+total);
-//            conns.get(0).incrementWeight(0.1 * (total.weightOffsets()[0] / trainingData.getData().size()));
-//            conns.get(1).incrementWeight(0.1 * (total.weightOffsets()[1] / trainingData.getData().size()));
-//            conns.get(2).incrementWeight(0.1 * (total.biasOffset()/ trainingData.getData().size()));
-
+            STEP_SIZE *= 0.95;
             epoch++;
         }
     }
