@@ -1,6 +1,6 @@
 package online.umbcraft.ml.component;
 
-import online.umbcraft.ml.activations.ActivationFunction;
+import online.umbcraft.ml.functions.activations.ActivationFunction;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package online.umbcraft.ml.activations;
+package online.umbcraft.ml.functions.activations;
 
 public class HeavisideFunction implements ActivationFunction {
 
@@ -12,5 +12,10 @@ public class HeavisideFunction implements ActivationFunction {
 
     public double derivative(double weightedSum){
         throw new IllegalCallerException("Function does not have a derivative");
+    }
+
+    @Override
+    public String name() {
+        return "Heaviside";
     }
 }

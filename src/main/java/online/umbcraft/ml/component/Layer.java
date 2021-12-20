@@ -1,11 +1,11 @@
 package online.umbcraft.ml.component;
 
 import online.umbcraft.data.offsets.OffsetVector;
-import online.umbcraft.ml.activations.ActivationFunction;
+import online.umbcraft.ml.functions.activations.ActivationFunction;
 import online.umbcraft.ml.component.nodes.BiasNode;
 import online.umbcraft.ml.component.nodes.Node;
 import online.umbcraft.ml.component.nodes.TLUNode;
-import online.umbcraft.ml.costs.ErrorFunction;
+import online.umbcraft.ml.functions.costs.ErrorFunction;
 import online.umbcraft.ml.perceptron.Perceptron;
 
 import java.util.ArrayList;
@@ -42,6 +42,16 @@ public class Layer {
         return nodes.size();
     }
 
+    // returns an array containing all of the weights of each node in the layer
+    public double[][] getLayerWeights() {
+        double[][] toReturn = new double[nodes.size()][];
+        for(int i = 0; i < nodes.size(); i++) {
+            TLUNode node = (TLUNode) nodes.get(i);
+            toReturn[i] = node.getTLU().getWeights();
+        }
+        return toReturn;
+    }
+
     public List<OffsetVector> train(final double[] labels) {
 
         List<OffsetVector> allOffsets = new ArrayList<>();
@@ -65,11 +75,6 @@ public class Layer {
             double biasOffset = ef.derivative(guess, labels[nodeIndex])
                     * af.derivative(weightedSum)
                     * -1; // need to get NEGATIVE slope
-
-//            System.out.println("guess: "+guess+", answer: "+labels[nodeIndex]);
-//            System.out.println("weighted sum: "+weightedSum);
-//            System.out.println("ef deriv: "+ef.derivative(guess, labels[nodeIndex]));
-//            System.out.println("af deriv: "+af.derivative(weightedSum));
 
             // get weight and node offsets for each non-bias connection
             for(int connIndex = 0; connIndex < nodeInputs.size()-1; connIndex++) {

@@ -3,16 +3,20 @@ package online.umbcraft.ml.perceptron;
 import online.umbcraft.data.inputs.DataPoint;
 import online.umbcraft.data.inputs.DataSet;
 import online.umbcraft.data.offsets.OffsetVector;
-import online.umbcraft.ml.activations.ActivationFunction;
+import online.umbcraft.ml.functions.activations.ActivationFunction;
 import online.umbcraft.ml.component.Connection;
 import online.umbcraft.ml.component.Layer;
 import online.umbcraft.ml.component.ThresholdLogicUnit;
 import online.umbcraft.ml.component.nodes.Node;
 import online.umbcraft.ml.component.nodes.PassthroughNode;
 import online.umbcraft.ml.component.nodes.TLUNode;
-import online.umbcraft.ml.costs.ErrorFunction;
+import online.umbcraft.ml.functions.costs.ErrorFunction;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +67,6 @@ public class Perceptron {
     }
 
     public double performTest(DataSet testSet) {
-
         double totalError = 0;
         for(DataPoint testPoint : testSet.getData()) {
             setFeatures(testPoint);
@@ -79,6 +82,52 @@ public class Perceptron {
         return avgError;
     }
 
+
+    public JSONObject asJSON() {
+        JSONObject root = new JSONObject();
+        root.put("activation-function",af.name());
+        root.put("error-function",ef.name());
+
+        JSONArray layerSizes = new JSONArray();
+        for (Layer value : layers) {
+            layerSizes.add(value.size());
+        }
+        root.put("dimensions",layerSizes);
+
+
+        JSONArray allWeights = new JSONArray();
+        for(double[][] l : getAllWeights()) {
+            JSONArray layerWeights = new JSONArray();
+            for(double[] n : l) {
+                JSONArray nodeWeights = new JSONArray();
+                for(double w : n) {
+                    nodeWeights.add(w);
+                }
+                layerWeights.add(nodeWeights);
+            }
+            allWeights.add(layerWeights);
+        }
+        root.put("weights", allWeights);
+
+        return root;
+    }
+
+    public void export(File exportTo) throws IOException {
+        JSONObject asJSON = asJSON();
+        FileWriter writer = new FileWriter(exportTo);
+        asJSON.writeJSONString(writer);
+        writer.close();
+    }
+
+
+    // returns all connection weights of each TLU node in the perceptron
+    public double[][][] getAllWeights() {
+        double[][][] toReturn = new double[layers.size()-1][][];
+        for(int i = 1; i < layers.size(); i++) {
+            toReturn[i-1] = layers.get(i).getLayerWeights();
+        }
+        return toReturn;
+    }
 
     // uses values from datapoint to fill features
     public void setFeatures(DataPoint inputs) {

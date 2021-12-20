@@ -1,4 +1,4 @@
-package online.umbcraft.ml.costs;
+package online.umbcraft.ml.functions.costs;
 
 public class MeanSquaredError implements ErrorFunction {
 
@@ -10,5 +10,10 @@ public class MeanSquaredError implements ErrorFunction {
     @Override
     public double derivative(double prediction, double goal) {
         return 2 * (prediction - goal);
+    }
+
+    @Override
+    public String name(){
+        return "MSE";
     }
 }

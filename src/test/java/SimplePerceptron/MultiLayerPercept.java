@@ -3,11 +3,13 @@ package SimplePerceptron;
 import online.umbcraft.data.inputs.DataPoint;
 import online.umbcraft.data.inputs.DataSet;
 import online.umbcraft.data.jframe.DataGrapher;
-import online.umbcraft.ml.activations.TanhFunction;
-import online.umbcraft.ml.costs.MeanSquaredError;
+import online.umbcraft.ml.functions.activations.TanhFunction;
+import online.umbcraft.ml.functions.costs.MeanSquaredError;
 import online.umbcraft.ml.perceptron.Perceptron;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -39,14 +41,14 @@ public class MultiLayerPercept {
         return maxIndex;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Perceptron perceptron = new Perceptron(
                 new TanhFunction(),
                 new MeanSquaredError(),
-                5, 12, 12, 4
+                2, 4, 4
         );
 
-        double STEP_SIZE = 0.16;
+        double STEP_SIZE = 0.25;
 
         DataSet dataset = new DataSet();
         DataGrapher graph = new DataGrapher(dataset);
@@ -70,7 +72,7 @@ public class MultiLayerPercept {
                 labels[goalIndex] = 1;
 
                 DataPoint newPoint = new DataPoint(
-                        new double[]{x, y, x*x, y*y, Math.sqrt(x*x + y*y)},
+                        new double[]{x, y},
                         labels);
                 dataset.add(newPoint);
                 graph.addPoint_g(x, y, colors[goalIndex]);
@@ -83,9 +85,8 @@ public class MultiLayerPercept {
         DataSet[] batches = dataset.batches(1);
 
 
-        // 10k epochs!
         int epoch = 0;
-        for (int i = 0; i < 500000; i++) {
+        for (int i = 0; i < 100; i++) {
             System.out.println("----Epoch " + epoch+":");
             int iteration = 0;
             for (DataSet batch : batches) {
@@ -129,8 +130,13 @@ public class MultiLayerPercept {
                 System.out.println("Percentage is " + (numRight/testSize));
 
             }
-            STEP_SIZE *= 0.95;
+            STEP_SIZE *= 0.99;
             epoch++;
+
+            System.out.println("JSON:\n"+perceptron.asJSON().toJSONString());
         }
+
+        File outputFile = new File("net.json");
+        perceptron.export(outputFile);
     }
 }

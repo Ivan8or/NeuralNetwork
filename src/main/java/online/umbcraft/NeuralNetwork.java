@@ -2,8 +2,8 @@ package online.umbcraft;
 
 import online.umbcraft.data.inputs.DataPoint;
 import online.umbcraft.data.inputs.DataSet;
-import online.umbcraft.ml.activations.TanhFunction;
-import online.umbcraft.ml.costs.MeanSquaredError;
+import online.umbcraft.ml.functions.activations.TanhFunction;
+import online.umbcraft.ml.functions.costs.MeanSquaredError;
 import online.umbcraft.ml.perceptron.Perceptron;
 
 import java.awt.*;

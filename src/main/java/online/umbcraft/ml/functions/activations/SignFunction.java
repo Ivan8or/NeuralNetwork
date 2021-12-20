@@ -1,4 +1,4 @@
-package online.umbcraft.ml.activations;
+package online.umbcraft.ml.functions.activations;
 
 public class SignFunction implements ActivationFunction {
 
@@ -12,7 +12,13 @@ public class SignFunction implements ActivationFunction {
         return -1;
     }
 
+    @Override
     public double derivative(double weightedSum){
         throw new IllegalCallerException("Function does not have a derivative");
+    }
+
+    @Override
+    public String name(){
+        return "Sign";
     }
 }

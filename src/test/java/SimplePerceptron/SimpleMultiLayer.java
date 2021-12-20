@@ -1,11 +1,10 @@
 package SimplePerceptron;
 
-import online.umbcraft.data.offsets.OffsetVector;
 import online.umbcraft.ml.component.Connection;
 import online.umbcraft.ml.component.ThresholdLogicUnit;
-import online.umbcraft.ml.activations.ActivationFunction;
-import online.umbcraft.ml.activations.TanhFunction;
-import online.umbcraft.ml.costs.MeanSquaredError;
+import online.umbcraft.ml.functions.activations.ActivationFunction;
+import online.umbcraft.ml.functions.activations.TanhFunction;
+import online.umbcraft.ml.functions.costs.MeanSquaredError;
 import online.umbcraft.ml.component.nodes.BiasNode;
 import online.umbcraft.ml.component.nodes.PassthroughNode;
 import online.umbcraft.ml.component.nodes.TLUNode;
