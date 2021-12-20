@@ -14,6 +14,6 @@ public class MeanAbsoluteError implements ErrorFunction {
 
     @Override
     public String name(){
-        return "MAE";
+        return getClass().getName();
     }
 }

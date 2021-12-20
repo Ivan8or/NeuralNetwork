@@ -15,6 +15,6 @@ public class TanhFunction implements ActivationFunction {
 
     @Override
     public String name(){
-        return "Tanh";
+        return getClass().getName();
     }
 }

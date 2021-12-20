@@ -17,6 +17,6 @@ public class ReLUFunction implements ActivationFunction {
 
     @Override
     public String name(){
-        return "ReLU";
+        return getClass().getName();
     }
 }

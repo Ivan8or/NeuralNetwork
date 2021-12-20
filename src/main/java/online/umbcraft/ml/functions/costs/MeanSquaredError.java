@@ -14,6 +14,6 @@ public class MeanSquaredError implements ErrorFunction {
 
     @Override
     public String name(){
-        return "MSE";
+        return getClass().getName();
     }
 }

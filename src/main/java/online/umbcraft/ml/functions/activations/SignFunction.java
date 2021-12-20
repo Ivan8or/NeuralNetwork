@@ -19,6 +19,6 @@ public class SignFunction implements ActivationFunction {
 
     @Override
     public String name(){
-        return "Sign";
+        return getClass().getName();
     }
 }

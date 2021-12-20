@@ -15,6 +15,6 @@ public class SigmoidFunction implements ActivationFunction {
 
     @Override
     public String name(){
-        return "Sigmoid";
+        return getClass().getName();
     }
 }

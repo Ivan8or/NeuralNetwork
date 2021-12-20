@@ -52,6 +52,14 @@ public class Layer {
         return toReturn;
     }
 
+    // set all weights in this layer from an array
+    public void setLayerWeights(double[][] weights) {
+        for(int i = 0; i < nodes.size(); i++) {
+            TLUNode node = (TLUNode) nodes.get(i);
+            node.getTLU().setWeights(weights[i]);
+        }
+    }
+
     public List<OffsetVector> train(final double[] labels) {
 
         List<OffsetVector> allOffsets = new ArrayList<>();

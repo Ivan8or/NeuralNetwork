@@ -14,6 +14,6 @@ public class RootMeanSquaredError implements ErrorFunction {
 
     @Override
     public String name(){
-        return "RMSE";
+        return getClass().getName();
     }
 }

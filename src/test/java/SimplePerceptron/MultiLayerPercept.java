@@ -45,10 +45,10 @@ public class MultiLayerPercept {
         Perceptron perceptron = new Perceptron(
                 new TanhFunction(),
                 new MeanSquaredError(),
-                2, 4, 4
+                2, 3, 4
         );
 
-        double STEP_SIZE = 0.25;
+        double STEP_SIZE = 0.5;
 
         DataSet dataset = new DataSet();
         DataGrapher graph = new DataGrapher(dataset);
@@ -86,7 +86,7 @@ public class MultiLayerPercept {
 
 
         int epoch = 0;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             System.out.println("----Epoch " + epoch+":");
             int iteration = 0;
             for (DataSet batch : batches) {

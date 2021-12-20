@@ -15,7 +15,7 @@ public class HeavisideFunction implements ActivationFunction {
     }
 
     @Override
-    public String name() {
-        return "Heaviside";
+    public String name(){
+        return getClass().getName();
     }
 }

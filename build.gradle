@@ -21,6 +21,7 @@ url = 'https://oss.sonatype.org/content/groups/public/'
 dependencies {
 implementation 'org.jfree:jfreechart:1.5.3'
 implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+implementation 'org.reflections:reflections:0.10.2'
 }
 
 processResources {
