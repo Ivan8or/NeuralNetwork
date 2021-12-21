@@ -4,7 +4,6 @@ import online.umbcraft.data.inputs.DataPoint;
 import online.umbcraft.data.inputs.DataSet;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

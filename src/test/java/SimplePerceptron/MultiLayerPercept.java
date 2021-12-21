@@ -42,14 +42,17 @@ public class MultiLayerPercept {
         return maxIndex;
     }
 
-    public static void main(String[] args) throws IOException {
-        Perceptron perceptron = new Perceptron(
-                new TanhFunction(),
-                new MeanSquaredError(),
-                2, 8, 8, 4
-        );
+    public static void main(String[] args) throws Exception {
+//        Perceptron perceptron = new Perceptron(
+//                new TanhFunction(),
+//                new MeanSquaredError(),
+//                2, 8, 8, 4
+//        );
 
-        double STEP_SIZE = 0.2;
+        File importFile = new File("net.json");
+        Perceptron perceptron = new Perceptron(importFile);
+
+        double STEP_SIZE = 0.5;
 
         DataSet dataset = new DataSet();
         DataGrapher graph = new DataGrapher(dataset, 2);
@@ -124,7 +127,7 @@ public class MultiLayerPercept {
 
                 // train
                 double startTime = System.currentTimeMillis();
-                perceptron.trainIteration(batch, STEP_SIZE);
+                perceptron.trainIteration(batch, STEP_SIZE * avgError);
                 double endTime = System.currentTimeMillis();
                 System.out.println("testing iteration took "+(endTestTime-startTestTime)+"ms");
                 System.out.println("training iteration took "+(endTime-startTime)+"ms");
@@ -132,7 +135,6 @@ public class MultiLayerPercept {
                 System.out.println("Percentage is " + (numRight/testSize));
 
             }
-            STEP_SIZE *= 0.99;
             epoch++;
 
 
