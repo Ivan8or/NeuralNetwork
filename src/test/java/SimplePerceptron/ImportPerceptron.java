@@ -16,11 +16,12 @@ public class ImportPerceptron {
         File importFile = new File("net.json");
         Perceptron perceptron = new Perceptron(importFile);
 
-        System.out.println("JSON:\n"+perceptron.asJSON());
 
         DataSet dataset = new DataSet();
-        DataGrapher graph = new DataGrapher(dataset);
+        DataGrapher graph = new DataGrapher(dataset, 2);
 
+        Scanner sc = new Scanner(System.in);
+        sc.nextLine();
         Color[] colors = {Color.BLUE, Color.RED, Color.BLACK, Color.CYAN};
 
         double interval = 0.3;
@@ -37,10 +38,10 @@ public class ImportPerceptron {
             perceptron.setFeatures(testPoint);
             double[] guesses = perceptron.evaluate(testPoint.getFeatures());
             int largestIndex = largestIndex(guesses);
-            graph.addPoint_g(
+            graph.addPoint(0,
                     testPoint.getFeatures()[0],
                     testPoint.getFeatures()[1],
-                    colors[largestIndex]
+                    largestIndex
             );
 
         }

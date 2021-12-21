@@ -10,6 +10,7 @@ import online.umbcraft.ml.perceptron.Perceptron;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -45,44 +46,45 @@ public class MultiLayerPercept {
         Perceptron perceptron = new Perceptron(
                 new TanhFunction(),
                 new MeanSquaredError(),
-                2, 3, 4
+                2, 8, 8, 4
         );
 
-        double STEP_SIZE = 0.5;
+        double STEP_SIZE = 0.2;
 
         DataSet dataset = new DataSet();
-        DataGrapher graph = new DataGrapher(dataset);
+        DataGrapher graph = new DataGrapher(dataset, 2);
 
         // dataset of size 10k
 
+//        double interval = 0.3;
+//        //double interval = 0.1575;
+//        for (double x = -10.0; x < 10; x+=interval) {
+//            for (double y = -10.0; y < 10; y+=interval) {
+//
+//                // function to imitate
+//                //boolean fx = (x*x +y*y < 1.5*1.5);
+//                double[] labels = {-1, -1, -1, -1};
+//
+//                int goalIndex = goalFunction(x, y);
+//                labels[goalIndex] = 1;
+//
+//                DataPoint newPoint = new DataPoint(
+//                        new double[]{x, y},
+//                        labels);
+//                dataset.add(newPoint);
+//                graph.addPoint(0,x, y, colors[goalIndex]);
+//            }
+//        }
+
         Scanner sc = new Scanner(System.in);
-        //System.out.println("manual point entry...");
-
-        Color[] colors = {Color.BLUE, Color.RED, Color.BLACK, Color.CYAN};
-        double interval = 0.3;
-        //double interval = 0.1575;
-        for (double x = -10.0; x < 10; x+=interval) {
-            for (double y = -10.0; y < 10; y+=interval) {
-
-                // function to imitate
-                //boolean fx = (x*x +y*y < 1.5*1.5);
-                double[] labels = {-1, -1, -1, -1};
-
-                int goalIndex = goalFunction(x, y);
-                labels[goalIndex] = 1;
-
-                DataPoint newPoint = new DataPoint(
-                        new double[]{x, y},
-                        labels);
-                dataset.add(newPoint);
-                graph.addPoint_g(x, y, colors[goalIndex]);
-            }
-        }
+        System.out.println("manual point entry...");
+        sc.nextLine();
+        dataset = graph.getDataset();
         System.out.println("dataset size: "+dataset.dimensions()[1]);
 
-        sc.nextLine();
         dataset.shuffle();
-        DataSet[] batches = dataset.batches(1);
+        dataset = dataset.splitSet(0.05)[0];
+        DataSet[] batches = dataset.batches(4);
 
 
         int epoch = 0;
@@ -102,12 +104,12 @@ public class MultiLayerPercept {
                     perceptron.setFeatures(testPoint);
                     double[] guesses = perceptron.evaluate(testPoint.getFeatures());
                     int largestIndex = largestIndex(guesses);
-                    graph.addPoint_m(
+                    graph.addPoint(1,
                             testPoint.getFeatures()[0],
                             testPoint.getFeatures()[1],
-                            colors[largestIndex]
+                            largestIndex
                     );
-                    if(largestIndex == goalFunction(testPoint.getFeatures()[0],testPoint.getFeatures()[1]))
+                    if(testPoint.getLabels()[largestIndex] == 1)
                         numRight++;
 
                     // calculate error for all labels for the output
@@ -133,10 +135,14 @@ public class MultiLayerPercept {
             STEP_SIZE *= 0.99;
             epoch++;
 
+
+            File outputFile = new File("net.json");
+            perceptron.export(outputFile);
+
+
             System.out.println("JSON:\n"+perceptron.asJSON().toJSONString());
         }
 
-        File outputFile = new File("net.json");
-        perceptron.export(outputFile);
+
     }
 }

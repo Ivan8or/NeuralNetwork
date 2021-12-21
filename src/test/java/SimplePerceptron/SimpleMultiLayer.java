@@ -73,7 +73,7 @@ public class SimpleMultiLayer {
 
 
         DataSet dataset = new DataSet();
-        DataGrapher graph = new DataGrapher(dataset);
+        DataGrapher graph = new DataGrapher(dataset, 2);
 
 
 
@@ -113,10 +113,10 @@ public class SimpleMultiLayer {
                 xInput.setInput(testPoint.getFeatures()[0]);
                 yInput.setInput(testPoint.getFeatures()[1]);
                 double guess = layer2node.evaluate();
-                graph.addPoint_m(
+                graph.addPoint(1,
                         testPoint.getFeatures()[0],
                         testPoint.getFeatures()[1],
-                        (guess > 0)?Color.RED: Color.BLUE
+                        (guess > 0)? 0 : 1
                         );
 
                 double cost = mse.result(guess, testPoint.getLabels()[0]);
